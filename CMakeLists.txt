@@ -7,10 +7,10 @@ set(CMAKE_CXX_FLAGS "-w")
 set(CMAKE_CXX_FLAGS_RELEASE "-02 -g -ggdb ${CMAKE_CXX_FLAGS}") # 设置在release编译下的优化设置
 set(CMAKE_CXX_FLAGS_DEBUG "-g ${CMAKE_CXX_FLAGS}")
 
-add_subdirectory(Single)
-add_subdirectory(NumerialDeraviation)
-add_subdirectory(gammer)
-
+# add_subdirectory(Single)
+# add_subdirectory(NumerialDeraviation)
+# add_subdirectory(gammer)
+add_subdirectory(unclassified)
 
 
 
