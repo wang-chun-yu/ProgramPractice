@@ -2,7 +2,7 @@
  * @Author: wangpeiying04 wangpeiying04@countrygarden.com.cn
  * @Date: 2023-07-23 02:07:25
  * @LastEditors: wangpeiying04 wangpeiying04@countrygarden.com.cn
- * @LastEditTime: 2023-07-23 02:19:13
+ * @LastEditTime: 2023-08-07 10:37:39
  * @FilePath: /ProgramPractice/unclassified/Timer.cpp
  * @Description: 
  * 
@@ -12,6 +12,12 @@
 #include <thread>
 #include <chrono>
 #include <functional>
+
+
+// 回调函数可以接受一个任意类型的函数,和变量.
+// 1.编译失败.
+// 这个功能是可以借鉴thread初始化时的实现,看了一得引入了比较多东西.现在没有非要不可的程度,暂不去考虑.
+
 
 class Timer {
 public:
