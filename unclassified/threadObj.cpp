@@ -41,7 +41,7 @@ public:
     {
         if (running_ && paused_) {
             paused_ = false;
-            // cond_var_.notify_one();
+            cond_var_.notify_one();
             std::cout << "定时器恢复！" << std::endl;
         }
     }
@@ -67,10 +67,11 @@ private:
     void TimerLoop()
     {
         while (running_) {
-            // std::unique_lock<std::mutex> lock(mutex_);
+            // 是不是可以不要这个锁,
+            std::unique_lock<std::mutex> lock(mutex_);
 
             if (paused_) {
-                // cond_var_.wait(lock);
+                cond_var_.wait(lock); 
             } else {
                 TimerCallback();
                 // lock.unlock();

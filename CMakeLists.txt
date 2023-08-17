@@ -12,7 +12,7 @@ set(CMAKE_CXX_FLAGS_DEBUG "-g ${CMAKE_CXX_FLAGS}")
 # add_subdirectory(gammer)
 add_subdirectory(unclassified)
 add_subdirectory(thread)
-
+add_subdirectory(leetcode)
 
 
 
