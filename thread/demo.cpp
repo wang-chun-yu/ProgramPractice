@@ -12,6 +12,7 @@
 #include <unistd.h>
 #include <iostream>
 #include <chrono>
+#include <functional>
 
 // breif: 推荐写法,先申请线程对象,方便控制线程对象生命周期.
 

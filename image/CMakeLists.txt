@@ -1,0 +1,5 @@
+set(OpenCV_DIR ${PROJECT_SOURCE_DIR}/3rdparty/opencv-4.8.0/build/bin/lib/cmake)
+find_package(OpenCV REQUIRED)
+include_directories( ${OpenCV_INCLUDE_DIRS} )
+add_executable( DisplayImage DisplayImage.cpp )
+target_link_libraries( DisplayImage ${OpenCV_LIBS} )
