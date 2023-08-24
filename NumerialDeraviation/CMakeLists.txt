@@ -7,3 +7,5 @@ message("EIGEN3_INCLUDE_DIR:"${EIGEN3_INCLUDE_DIR})
 
 add_executable(test1 test1.cpp)
 add_executable(VariableParameter VariableParameter.cpp)
+
+# cmake -DCMAKE_INSTALL_PREFIX=./bin ..

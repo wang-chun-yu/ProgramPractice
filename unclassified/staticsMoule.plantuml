@@ -1,0 +1,9 @@
+@startuml
+start
+    group 初始化统计模块
+        : 重置模块数据;
+        : 从文件拿取数据;
+        : 启动定时数据获取模块;
+    end group
+@enduml
+
