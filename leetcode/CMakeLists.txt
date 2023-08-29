@@ -1,5 +1,4 @@
-set(GTest_DIR ${PROJECT_SOURCE_DIR}/3rdparty/googletest-main/build/bin/lib/cmake/GTest/)
-find_package(GTest REQUIRED)
+find_package(GTest REQUIRED PATHS "${GOOGLE_TEST_UNZIP_DIR}/${GOOGLE_TEST_UNZIP_NAME}/build/bin/lib/cmake/GTest/" )
 
 enable_testing()
 
