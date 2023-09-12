@@ -10,6 +10,7 @@
 #include <unordered_map>
 #include <any>
 #include <memory_resource>
+#include <iostream>
 
 class sc_hello_world
 {
@@ -22,15 +23,15 @@ class sc_hello_world
 	{
 		public:
 		virtual ~state(){}
-		virtual state* unconditional(sc_hello_world&) { return 0; }
-		virtual state* initial(sc_hello_world&) { return 0; }
+		virtual state* unconditional(sc_hello_world&) {  return 0; }
+		virtual state* initial(sc_hello_world&) { std::cout<< "start" << std::endl;return 0; }
 
 		template<class T> void enter(data_model&, ...) {}
 		template<class T> void exit(data_model&, ...) {}
 		virtual bool in(const void*) { return false; }
 	};
 
-	typedef state* (state::*event)(sc_hello_world&);
+	typedef state* (state::*event)(sc_hello_world&);  //事件类型:一个接收状态机类并返回状态指针的函数指针类型
 
 	std::unordered_map<std::string, event> event_map;
 	template<class C> class state_actions
@@ -64,6 +65,7 @@ class sc_hello_world
 		bool condition(data_model&) { return true; } // default condition action
 	};
 
+	// 定义转换的接口:E为事件,S为当前状态,D为待转换状态
 	// external/internal transition
 	template<event E, class S, class D = no_state, transition_type T = external> class transition : public transition_actions<E, S, D>
 	{
@@ -75,15 +77,16 @@ class sc_hello_world
 		public:
 		state* operator ()(S *s, sc_hello_world &sc)
 		{
-			if(!transition_actions<E, S, D>::condition(sc.model)) return 0;
-			D *d = sc.get_state<D>();
-			state_exit(s, sc.model, id<T>(), static_cast<typename D::parent_t*>(nullptr));
-			transition_actions<E, S, D>::enter(sc.model);
-			state_enter(d, sc.model, id<T>(), static_cast<typename D::parent_t*>(nullptr));
+			if(!transition_actions<E, S, D>::condition(sc.model)) return 0;                 // 判断事件条件是否满足
+			D *d = sc.get_state<D>();                                                       // 获取下一状态的指针
+			state_exit(s, sc.model, id<T>(), static_cast<typename D::parent_t*>(nullptr));  // 上一状态退出函数执行
+			transition_actions<E, S, D>::enter(sc.model);                                   // 事件进入函数执行
+			state_enter(d, sc.model, id<T>(), static_cast<typename D::parent_t*>(nullptr)); // 下一状态进入
 			return d;
 		}
 	};
 
+	// 执行当前状态的事件e
 	private: bool dispatch_event(event e)
 	{
 		state *next_state;
@@ -93,6 +96,7 @@ class sc_hello_world
 
 	public: void dispatch_int(event e = &state::unconditional)
 	{
+		// 每次释放事件也会触发一次该状态的无状态转移函数
 		bool cont = dispatch_event(e) || dispatch_event(&state::unconditional);
 		while (cont) {
 			if ((cont = dispatch_event(&state::initial)));
@@ -166,6 +170,7 @@ class sc_hello_world
 		{}
 	} model;
 
+	//1.构造函数:赋上当前状态和退出事件队列
 	sc_hello_world(user_model *user = nullptr, std::pmr::memory_resource* allocator = std::pmr::get_default_resource())
 	: model(user, allocator)
 	{
@@ -175,11 +180,13 @@ class sc_hello_world
 
 	void init() { dispatch_ext(); }
 
+	// 状态
 	struct scxml : public composite<scxml, state>
 	{
-		state* initial(sc_hello_world&sc) { return transition<&state::initial, scxml, state_hello, internal>()(this, sc); }
+		state* initial(sc_hello_world&sc) { std::cout<< "start" << std::endl;return transition<&state::initial, scxml, state_hello, internal>()(this, sc); }
 	};
 
+	// state_hello是一个抽象状态；继承的composite是一个基类,定义了状态默认的进入和退出函数; scxml是继承的父状态.
 	struct state_hello : public composite<state_hello, scxml>
 	{
 		state* unconditional(sc_hello_world &sc) { return transition<&state::unconditional, state_hello, state_world>()(this, sc); }
