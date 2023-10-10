@@ -67,7 +67,9 @@
         "hash_set": "cpp",
         "unordered_set": "cpp",
         "valarray": "cpp",
-        "shared_mutex": "cpp"
+        "shared_mutex": "cpp",
+        "any": "cpp",
+        "variant": "cpp"
     },
     "ros.distro": "melodic"
 }
