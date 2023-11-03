@@ -14,5 +14,6 @@ endfunction()
 
 add_example(t1)
 add_example(t2)
+add_example(t3)
 
 # add_executable(t2 t2.cc)
