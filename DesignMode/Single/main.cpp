@@ -8,21 +8,26 @@
  * 
  * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved. 
  */
-#include "SingleTemplate1.h"
+#pragma once 
+
+#include "SingleTemplate2.h"
 #include <cstdint>
 #include <string>
 #include <thread>
 
 #define NUM 100
 
+
+
 class  student
 {
 private:
     uint16_t m_age;
+    uint16_t m_seq;
     std::string m_name;
 public:
      student(){};
-     student(uint16_t age, std::string name): m_age(age),m_name(name){};
+     student(uint16_t age, uint16_t seq, std::string name): m_age(age), m_seq(seq), m_name(name){};
      void set_age(uint16_t age){m_age=age;};
      void set_m_name(std::string name){m_name=name;};
      void show_info()
@@ -33,6 +38,8 @@ public:
     ~ student(){};
 };
 
+
+
 int main(int argc, char **argv)
 {
     // Instance<student> A; //禁止该操作，编译器会提醒.
@@ -40,10 +47,10 @@ int main(int argc, char **argv)
     for(int i=0;i<NUM;i++)
     {
         thd[i] = std::thread([](int i){
-            auto ptr = Instance<student>::getInstance();
+            auto ptr = Instance<student>::get_instance(18,66,"xiaoming");
             printf("cur thread name: %d\n", std::this_thread::get_id());
             printf("ptr%d: %lx\n", i,ptr);
-            printf("use ptr_num:%d\n",ptr.use_count());
+            // printf("use ptr_num:%d\n",ptr.use_count());
             },i);
     }
 
@@ -52,8 +59,8 @@ int main(int argc, char **argv)
         thd[i].join();
     }
 
-    auto ptr = Instance<student>::getInstance();
-    printf("use ptr_num:%d",ptr.use_count());
+    auto ptr = Instance<student>::get_instance();
+    // printf("use ptr_num:%d",ptr.use_count());
     // ptr->set_age(11);
     // ptr->set_m_name("xiaoli");
     // ptr->show_info();

@@ -11,10 +11,11 @@
 #include <iostream>
 #include <functional>
 
-// #define BASE
+
 // #define RECURSION
 // #define TEST1
 
+// #define BASE
 #ifdef BASE
 
 template<class... T>
@@ -90,7 +91,7 @@ int main()
 
 #endif
 
-#define TEST2
+// #define TEST2
 #ifdef TEST2
 
 #include <cstdarg>
@@ -110,14 +111,16 @@ void vair_fun(int count, ...)
 int main()
 {
     //可变参数有 4 个，分别为 10、20、30、40
-    vair_fun(4, "10", "20", "30", "40");
+    // vair_fun(4, "10", "20", "30", "40");
+    vair_fun(4, 10, 20, 30, 40);
     return 0;
 }
 
 #endif
 
+// #define TEST3
 #ifdef TEST3
-void fun(){};
+void fun(){std::cout << "end" << std::endl;};
 template <typename T,typename... B>
 void fun(T arg1, B... arg)
 {
@@ -129,7 +132,33 @@ void fun(T arg1, B... arg)
 
 int main()
 {
-    fun("Y1", "Y2", "Y3");
+    fun("Y1", "Y2", "Y3", 10, 10.5);
 }
 
+#endif
+
+#define class_vary
+#ifdef class_vary
+    // #include <iostream>
+    //声明模板类demo
+    template<typename... Values> class demo;
+    //继承式递归的出口
+    template<> class demo<> {};
+    //以继承的方式解包
+    template<typename Head, typename... Tail>
+    class demo<Head, Tail...>
+        : private demo<Tail...>
+    {
+    public:
+        demo(Head v, Tail... vtail) : m_head(v), demo<Tail...>(vtail...) {
+            dis_head();
+        }
+        void dis_head() { std::cout << m_head << std::endl; }
+    protected:
+        Head m_head;
+    };
+    int main() {
+        demo<int, float, std::string> t(1, 2.34, "http://www.biancheng.net");
+        return 0;
+    }
 #endif

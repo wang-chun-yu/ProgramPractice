@@ -35,7 +35,7 @@ endif()
 
 
 add_subdirectory(DesignMode/Single)
-# add_subdirectory(NumerialDeraviation)
+add_subdirectory(NumerialDeraviation)
 add_subdirectory(gammer)
 add_subdirectory(unclassified)
 add_subdirectory(thread)
